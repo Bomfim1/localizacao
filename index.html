@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compartilhar Localização</title>
+    <title>Enviar Localização para WhatsApp</title>
     <script>
         function getLocation() {
             if (navigator.geolocation) {
@@ -16,33 +16,24 @@
         function sendLocation(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
-            
-            // Enviar para um servidor (substitua pela sua URL de destino)
-            fetch('https://seu-servidor.com/localizacao', {
+            let webhookURL = "https://new-backend.botconversa.com.br/api/v1/webhooks-automation/catch/155079/5VA7V5lQtMy5/";
+
+            let data = {
+                telefone: "SEU_NUMERO", // Substitua pelo número do WhatsApp cadastrado no BotConversa
+                mensagem: `📍 *Nova localização recebida!*\n\n🌍 *Latitude:* ${latitude}\n🌍 *Longitude:* ${longitude}\n🔗 *Google Maps:* [Ver Localização](https://www.google.com/maps?q=${latitude},${longitude})`
+            };
+
+            fetch(webhookURL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ latitude, longitude })
+                body: JSON.stringify(data)
             })
-            .then(response => response.text())
-            .then(data => alert("Localização enviada com sucesso!"))
+            .then(response => alert("Localização enviada para o WhatsApp via BotConversa!"))
             .catch(error => alert("Erro ao enviar localização."));
         }
 
         function showError(error) {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("Permissão negada pelo usuário.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Informações de localização indisponíveis.");
-                    break;
-                case error.TIMEOUT:
-                    alert("Tempo limite atingido.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("Erro desconhecido.");
-                    break;
-            }
+            alert("Erro ao obter localização.");
         }
     </script>
 </head>
