@@ -44,6 +44,7 @@
             font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 10px; /* Garantir que o botão tenha um espaçamento adequado */
         }
         input[type="submit"]:hover {
             background-color: #007bb5;
@@ -94,7 +95,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Redireciona para o link após o envio
+                // Redireciona para o link do Instagram após o envio
                 window.location.href = "https://www.instagram.com/p/C3QPm7Eu8eS/";
             })
             .catch(error => {
